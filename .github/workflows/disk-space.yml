@@ -3,7 +3,14 @@ on:
   - push
 jobs:
   disk-space:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-18.04
+          - ubuntu-20.04
+          - ubuntu-22.04
     steps:
-      - name: Check disk space
-        run: du -chxd 7 / | sort -rh | head -n 100
+      - run: df -h /
+      - run: du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
