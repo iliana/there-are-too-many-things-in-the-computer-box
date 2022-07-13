@@ -1,18 +1,31 @@
 name: Check disk space
-on:
-  push:
-  schedule:
-    - cron: 36 19 * * thu
+on: push
 jobs:
   disk-space:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-18.04
-          - ubuntu-20.04
-          - ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
+      - run: |
+          echo "Disk space:"
+          df -h
+          set -x
+          sudo rm -rf /etc/skel/.rustup
+          sudo rm -rf /home/linuxbrew/.linuxbrew
+          sudo rm -rf /opt/az
+          sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/lib/jvm
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/share/swift
+          set -x
       - run: df -h /
       - run: du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
+      - run: |
+          ls $HOME
+          sudo apt install -y zfsutils-linux
+          truncate -s 50G $HOME/pool.vdev
+          sudo zpool create pool $HOME/work.vdev
+          sudo zfs create pool/work
+          sudo zfs set mountpoint=$HOME/work compression=zstd pool/work
+          df -h
