@@ -18,14 +18,16 @@ jobs:
           sudo rm -rf /usr/local/share/powershell
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/share/swift
+          docker images -q | xargs docker rmi
           set -x
       - run: df -h /
       - run: du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
       - run: |
+          set -x
           ls $HOME
           sudo apt install -y zfsutils-linux
           truncate -s 50G $HOME/pool.vdev
           sudo zpool create pool $HOME/work.vdev
-          sudo zfs create pool/work
+          sudo zfs create -f pool/work
           sudo zfs set mountpoint=$HOME/work compression=zstd pool/work
           df -h
