@@ -4,9 +4,8 @@ jobs:
   disk-space:
     runs-on: ubuntu-20.04
     steps:
+      - run: sudo du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
       - run: |
-          echo "Disk space:"
-          df -h
           set -x
           sudo systemctl stop docker
           sudo rm -rf /etc/skel/.rustup
@@ -25,15 +24,5 @@ jobs:
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/share/swift
           sudo rm -rf /var/lib/docker
-          set -x
-      - run: df -h /
+          df -h /
       - run: sudo du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
-      - run: |
-          set -x
-          ls $HOME
-          sudo apt install -y zfsutils-linux
-          truncate -s 50G $HOME/pool.vdev
-          sudo zpool create -f pool $HOME/work.vdev
-          sudo zfs create pool/work
-          sudo zfs set mountpoint=$HOME/work compression=zstd pool/work
-          df -h
