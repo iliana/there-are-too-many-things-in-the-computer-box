@@ -4,6 +4,7 @@ jobs:
   disk-space:
     runs-on: ubuntu-20.04
     steps:
+      - run: dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -rn
       - run: sudo du -chxd 5 / 2>/dev/null | sort -rh | head -n 100
       - run: |
           set -x
