@@ -1,6 +1,8 @@
 name: Check disk space
 on:
   - push
+  - schedule:
+    - cron: 36 19 * * thu
 jobs:
   disk-space:
     runs-on: ${{ matrix.os }}
