@@ -1,7 +1,7 @@
 name: Check disk space
 on:
-  - push
-  - schedule:
+  push:
+  schedule:
     - cron: 36 19 * * thu
 jobs:
   disk-space:
