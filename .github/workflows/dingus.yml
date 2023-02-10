@@ -3,4 +3,5 @@ jobs:
   dingus:
     runs-on: ubuntu-20.04
     steps:
-      - run: cat /etc/apt/sources.list.d/microsoft-prod.list
+      - run: sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list
+      - run: sudo apt-get update
