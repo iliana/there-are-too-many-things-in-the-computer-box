@@ -1,0 +1,8 @@
+name: conputer
+on: push
+jobs:
+  conputer:
+    runs-on: macos-12
+    steps:
+      - run: brew doctor
+      - run: brew install libxmlsec1
