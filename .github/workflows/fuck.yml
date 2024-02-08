@@ -5,4 +5,6 @@ jobs:
     runs-on: macos-12
     steps:
       - run: brew doctor || true
-      - run: brew install libxmlsec1
+      - run: |
+          brew untap homebrew/core
+          brew install libxmlsec1
